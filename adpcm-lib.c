@@ -1,10 +1,10 @@
-////////////////////////////////////////////////////////////////////////////
-//                           **** ADPCM-XQ ****                           //
-//                  Xtreme Quality ADPCM Encoder/Decoder                  //
-//                    Copyright (c) 2015 David Bryant.                    //
-//                          All Rights Reserved.                          //
-//      Distributed under the BSD Software License (see license.txt)      //
-////////////////////////////////////////////////////////////////////////////
+/* ====================================================================== *\
+||                           **** ADPCM-XQ ****                           ||
+||                  Xtreme Quality ADPCM Encoder/Decoder                  ||
+||                    Copyright (c) 2015 David Bryant.                    ||
+||                          All Rights Reserved.                          ||
+||      Distributed under the BSD Software License (see license.txt)      ||
+\* ====================================================================== */
 
 #include <stdlib.h>
 #include <string.h>
@@ -48,9 +48,9 @@ static const int index_table[] = {
 };
 
 struct adpcm_channel {
-    int32_t pcmdata;                        // current PCM value
-    int32_t error, weight, history [2];     // for noise shaping
-    int8_t index;                           // current index into step size table
+    int32_t pcmdata;                        /* current PCM value */
+    int32_t error, weight, history [2];     /* for noise shaping */
+    int8_t index;                           /* current index into step size table */
 };
 
 struct adpcm_context {
@@ -76,7 +76,7 @@ void *adpcm_create_context (int num_channels, int lookahead, int noise_shaping, 
     pcnxt->num_channels = num_channels;
     pcnxt->lookahead = lookahead;
 
-    // given the supplied initial deltas, search for and store the closest index
+    /* given the supplied initial deltas, search for and store the closest index */
 
     for (ch = 0; ch < num_channels; ++ch)
         for (i = 0; i <= 88; i++)
@@ -284,7 +284,7 @@ static void encode_chunks (struct adpcm_context *pcnxt, uint8_t **outbuf, size_t
  * Returns 1 (for success as there is no error checking)
  */
 
-int adpcm_encode_block (void *p, uint8_t *outbuf, size_t *outbufsize, const int16_t *inbuf, int inbufcount)
+unsigned int adpcm_encode_block (void *p, uint8_t *outbuf, size_t *outbufsize, const int16_t *inbuf, int inbufcount)
 {
     struct adpcm_context *pcnxt = (struct adpcm_context *) p;
     int32_t init_pcmdata[2];
@@ -331,9 +331,9 @@ int adpcm_encode_block (void *p, uint8_t *outbuf, size_t *outbufsize, const int1
  * Returns number of converted composite samples (total samples divided by number of channels)
  */ 
 
-int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize, int channels)
+unsigned int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize, unsigned int channels)
 {
-    int ch, samples = 1, chunks;
+    unsigned int ch, samples = 1, chunks, i;
     int32_t pcmdata[2];
     int8_t index[2];
 
@@ -344,7 +344,7 @@ int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize,
         *outbuf++ = pcmdata[ch] = (int16_t) (inbuf [0] | (inbuf [1] << 8));
         index[ch] = inbuf [2];
 
-        if (index [ch] < 0 || index [ch] > 88 || inbuf [3])     // sanitize the input a little...
+        if (index [ch] < 0 || index [ch] > 88 || inbuf [3])     /* sanitize the input a little... */
             return 0;
 
         inbufsize -= 4;
@@ -355,7 +355,6 @@ int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize,
     samples += chunks * 8;
 
     while (chunks--) {
-        int ch, i;
 
         for (ch = 0; ch < channels; ++ch) {
 
