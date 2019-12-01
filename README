@@ -1,10 +1,10 @@
-////////////////////////////////////////////////////////////////////////////
-//                           **** ADPCM-XQ ****                           //
-//                  Xtreme Quality ADPCM Encoder/Decoder                  //
-//                    Copyright (c) 2018 David Bryant.                    //
-//                          All Rights Reserved.                          //
-//      Distributed under the BSD Software License (see license.txt)      //
-////////////////////////////////////////////////////////////////////////////
+/* ====================================================================== *\
+||                           **** ADPCM-XQ ****                           ||
+||                  Xtreme Quality ADPCM Encoder/Decoder                  ||
+||                    Copyright (c) 2015 David Bryant.                    ||
+||                          All Rights Reserved.                          ||
+||      Distributed under the BSD Software License (see license.txt)      ||
+\* ====================================================================== */
 
 While very popular at the end of the last century, ADPCM is no longer a
 common audio encoding format, and is certainly not recommended as a general
@@ -33,14 +33,8 @@ on most platforms. It has been designed with maximum portability in mind
 and should work correctly on big-endian as well as little-endian machines
 (although the WAV files are always standard little-endian).
 
-Linux:
-% gcc -O2 *.c -o adpcm-xq
-
-Darwin/Mac:
-% clang -O2 *.c -o adpcm-xq
-
-MS Visual Studio:
-cl -O2 adpcm-xq.c adpcm-lib.c
+On most platforms:
+$ make
 
 Bugs:
 
