@@ -365,7 +365,7 @@ unsigned int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t i
                 if (*inbuf & 2) delta += (step >> 1);
                 if (*inbuf & 4) delta += step;
                 if (*inbuf & 8) delta = -delta;
-                
+
                 pcmdata[ch] += delta;
                 index[ch] += index_table [*inbuf & 0x7];
                 CLIP(index[ch], 0, 88);
@@ -378,7 +378,7 @@ unsigned int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t i
                 if (*inbuf & 0x20) delta += (step >> 1);
                 if (*inbuf & 0x40) delta += step;
                 if (*inbuf & 0x80) delta = -delta;
-                
+
                 pcmdata[ch] += delta;
                 index[ch] += index_table [(*inbuf >> 4) & 0x7];
                 CLIP(index[ch], 0, 88);
